@@ -2,7 +2,7 @@
 
 ---
 
-Kodlar java dili kullanılarak yazılmııştır.
+Kodlar java dili kullanılarak yazılmıştır.
 
 ---
 *Fonksiyonlar*
