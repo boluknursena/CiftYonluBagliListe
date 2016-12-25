@@ -284,6 +284,6 @@ public void dugumeGit(int i)
 ****
 
 ****
-image::EkranAlıntısı.png[Resim 1: Deneme]
+image::deneme.png[Resim 1: Deneme]
 
 ****
