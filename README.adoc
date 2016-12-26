@@ -2,14 +2,17 @@
 
 ---
 
-Kodlar java dili kullanılarak yazılmıştır.
+Kodlar java dili kullanılarak yazılmııştır.
 
 ---
 *Fonksiyonlar*
 
 * Baştan Ekleme
+* Ortadan Ekleme
 * Sondan Ekleme
+* İstenen Elemandan Sonra Ekle
 * Baştan Sil
+* Ortadan Sil
 * Sondan Sil
 * İsteneni Sil
 * Ara
@@ -48,6 +51,7 @@ public void yazdir()  <4>
 ----
 public class BListe {
 public Node head,tail;  <1>
+static int dugumSayisi;
 }
 ----
 <1> Baş ve son için düğüm tanımlaması.
@@ -71,6 +75,7 @@ public void basaEkle(String bilgi)
         yeni.sonraki=null;
         yeni.onceki=null;
         head=tail=yeni;
+        dugumSayisi++;
     }
     else <3>
     {
@@ -78,6 +83,7 @@ public void basaEkle(String bilgi)
         yeni.sonraki=head;
         head.onceki=yeni;
         head=yeni;
+        dugumSayisi++;
     }
     
 }
@@ -85,6 +91,45 @@ public void basaEkle(String bilgi)
 <1> Alınan parametreyi bilgisine atayan yeni adında bir düğüm oluşturur.
 <2> Hiç eleman yoksa ilkini oluşturur.
 <3> Elemanı başa ekler.
+****
+
+****
+
+*ORTAYA EKLE*
+
+[source,java]
+----
+public void ortayaEkle(String bilgi)
+{
+    Node yeni=new Node(bilgi); <1>
+    Node etkin=head;  <2>
+    int tut=dugumSayisi/2;  <3>
+    while(tut>1)  <4>
+    {
+        etkin=etkin.sonraki;
+        tut--;
+    }
+    if(head==null)  <5>
+    {
+        yeni.sonraki=null;
+        yeni.onceki=null;
+        head=tail=yeni;
+        dugumSayisi++;
+    }
+    else
+    {
+        yeni.onceki=etkin;
+        yeni.sonraki=etkin.sonraki;
+        etkin.sonraki=yeni;
+        dugumSayisi++;
+    }
+}
+----
+<1> Alınan parametreyi bilgisine atayan yeni adında bir düğüm oluşturur.
+<2> Node tipinde etkin adında arama yapmamızı sağlayacak değişkeni oluşturur.
+<3> Tut değişkenine araya ekleme yapmamaızı sağlayan aranın değerinin tutar.
+<4> Ekleyeceğimiz değerin yerini bulur.
+<5> Hiç eleman yoksa ilkini oluşturur.
 ****
 
 ****
@@ -101,6 +146,7 @@ public void sonaEkle(String bilgi)
         yeni.sonraki=null;
         yeni.onceki=null;
         head=tail=yeni;
+        dugumSayisi++;
     }
     else  <3>
     {
@@ -108,8 +154,8 @@ public void sonaEkle(String bilgi)
         tail.sonraki=yeni;
         yeni.onceki=tail;
         tail=yeni;
+        dugumSayisi++;
     }
-    
 }
 ----
 <1> Alınan parametreyi bilgisine atayan yeni adında bir düğüm oluşturur.
@@ -118,6 +164,45 @@ public void sonaEkle(String bilgi)
 
 ****
 
+****
+
+*İSTENEN ELEMANDAN SONRA EKLE*
+
+[source,java]
+----
+public void arayaEkle(String bundanSonra, String bilgi)
+{
+    Node yeni=new Node(bilgi); <1>
+    Node etkin=head; <2>
+    while(etkin.bilgi!=bundanSonra) <3>
+    {
+        if(etkin.sonraki==null) <4>
+        {
+            System.out.println("Olmayan elemandan sonra ekleme yapılmak istendi.");
+            return;
+        }
+        etkin=etkin.sonraki;
+    }
+    if(head==null) <5>
+    {
+        yeni.sonraki=null;
+        yeni.onceki=null;
+        head=tail=yeni;
+        dugumSayisi++;
+    }
+    yeni.sonraki=etkin.sonraki;
+    yeni.onceki=etkin;
+    etkin.sonraki=yeni;
+    dugumSayisi++;      
+}
+----
+<1> Alınan parametreyi bilgisine atayan yeni adında bir düğüm oluşturur.
+<2> Node tipinde etkin adında arama yapmamızı sağlayacak değişkeni oluşturur.
+<3> Eklemesi istenen düğümden öncekini bulur.
+<4> Eklemesi istenenden önceki düğüm yoksa uyarır
+<5> Listede eleman yoksa oluştur.
+
+****
 
 ****
 
@@ -134,9 +219,58 @@ public void bastanSil()
     }
     head=head.sonraki;
     head.onceki=null;  
+    dugumSayisi--;
 }
 ----
 <1> Hiç eleman yoksa uyarı verir.
+****
+****
+
+*ORTADAN SİL*
+
+[source,java]
+----
+public void ortadanSil()
+{
+    if(head==null) <1>
+    {
+        System.out.println("Liste boş");
+        return;
+    }
+    Node etkin=head; <2>
+    int tut=dugumSayisi/2; <3>
+    tut++; 
+    while(tut>1) <4>
+    {
+        etkin=etkin.sonraki;
+        tut--;
+    }
+    if(etkin==head) <5>
+    {
+        head=head.sonraki;
+        head.onceki=null;
+        dugumSayisi--;
+    }
+    else if(etkin==tail) <6>
+    {
+        tail=tail.onceki;
+        tail.sonraki=null;
+        dugumSayisi--;
+    }
+    else
+    {
+        etkin.onceki.sonraki=etkin.sonraki;
+        etkin.sonraki.onceki=etkin.onceki;
+        dugumSayisi--;
+    }   
+}
+----
+<1> Liste var mı kontrolü.
+<2> Node tipinde etkin adında arama yapmamızı sağlayacak değişkeni oluşturur.
+<3> Tut değişkenine aradan silme yapmamızı sağlayan aranın değerinin tutar.
+<4> Sileceğimiz değerin yerini bulur.
+<5> Silinecek değer ilk eleman ise burada işleme tabi tutulur.
+<6> Silinecek değer son eleman ise burada işleme tabi tutulur.
 ****
 
 ****
@@ -154,6 +288,7 @@ public void sondanSil()
     }
     tail=tail.onceki;
     tail.sonraki=null;
+    dugumSayisi--;
 }
 ----
 <1> Hiç eleman yoksa uyarı verir.
@@ -182,16 +317,19 @@ public void sil(String sil)
     {
         head=head.sonraki;
         head.onceki=null;
+         dugumSayisi--;
     }
     else if(etkin==tail)  <5>
     {
         tail=tail.onceki;
         tail.sonraki=null;
+        dugumSayisi--;
     }
     else <6>
     {
         etkin.onceki.sonraki=etkin.sonraki;
         etkin.sonraki.onceki=etkin.onceki;
+        dugumSayisi--;
     }
 }
 ----
@@ -276,7 +414,6 @@ public void dugumeGit(int i)
         etkin=etkin.sonraki;
     }
 }
-
 ----
 <1> Node tipinde etkin adında listeyi dolaşmamızı sağlayacak değişkeni oluşturur.
 <2> Liste bitene kadar dolaşır.
