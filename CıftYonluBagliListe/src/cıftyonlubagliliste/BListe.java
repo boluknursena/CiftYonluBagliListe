@@ -2,6 +2,11 @@ package cıftyonlubagliliste;
 
 public class BListe {
 public Node head,tail;
+static int dugumSayisi;
+public int getdugumSayisi()
+{
+    return dugumSayisi;
+}
 public void basaEkle(String bilgi)
 {
     Node yeni=new Node(bilgi);
@@ -10,6 +15,7 @@ public void basaEkle(String bilgi)
         yeni.sonraki=null;
         yeni.onceki=null;
         head=tail=yeni;
+        dugumSayisi++;
     }
     else
     {
@@ -17,8 +23,33 @@ public void basaEkle(String bilgi)
         yeni.sonraki=head;
         head.onceki=yeni;
         head=yeni;
+        dugumSayisi++;
+    }    
+}
+public void ortayaEkle(String bilgi)
+{
+    Node yeni=new Node(bilgi);
+    Node etkin=head;
+    int tut=dugumSayisi/2;
+    while(tut>1)
+    {
+        etkin=etkin.sonraki;
+        tut--;
     }
-    
+    if(head==null)
+    {
+        yeni.sonraki=null;
+        yeni.onceki=null;
+        head=tail=yeni;
+        dugumSayisi++;
+    }
+    else
+    {
+        yeni.onceki=etkin;
+        yeni.sonraki=etkin.sonraki;
+        etkin.sonraki=yeni;
+        dugumSayisi++;
+    }    
 }
 public void sonaEkle(String bilgi)
 {
@@ -28,6 +59,7 @@ public void sonaEkle(String bilgi)
         yeni.sonraki=null;
         yeni.onceki=null;
         head=tail=yeni;
+        dugumSayisi++;
     }
     else
     {
@@ -35,10 +67,35 @@ public void sonaEkle(String bilgi)
         tail.sonraki=yeni;
         yeni.onceki=tail;
         tail=yeni;
+        dugumSayisi++;
     }
-    
 }
-
+public void arayaEkle(String bundanSonra, String bilgi)
+{
+    Node yeni=new Node(bilgi);
+    Node etkin=head;
+    while(etkin.bilgi!=bundanSonra)
+    {
+        if(etkin.sonraki==null)
+        {
+            System.out.println("Olmayan elemandan sonra ekleme yapılmak istendi.");
+            return;
+        }
+            
+        etkin=etkin.sonraki;
+    }
+    if(head==null)
+    {
+        yeni.sonraki=null;
+        yeni.onceki=null;
+        head=tail=yeni;
+        dugumSayisi++;
+    }
+    yeni.sonraki=etkin.sonraki;
+    yeni.onceki=etkin;
+    etkin.sonraki=yeni;
+    dugumSayisi++;      
+}
 public void bastanSil()
 {
     if(head==null)
@@ -47,7 +104,42 @@ public void bastanSil()
         return;
     }
     head=head.sonraki;
-    head.onceki=null;  
+    head.onceki=null;
+    dugumSayisi--;
+}
+public void ortadanSil()
+{
+    if(head==null)
+    {
+        System.out.println("Liste boş");
+        return;
+    }
+    Node etkin=head;
+    int tut=dugumSayisi/2;
+    tut++;
+    while(tut>1)
+    {
+        etkin=etkin.sonraki;
+        tut--;
+    }
+    if(etkin==head)
+    {
+        head=head.sonraki;
+        head.onceki=null;
+        dugumSayisi--;
+    }
+    else if(etkin==tail)
+    {
+        tail=tail.onceki;
+        tail.sonraki=null;
+        dugumSayisi--;
+    }
+    else
+    {
+        etkin.onceki.sonraki=etkin.sonraki;
+        etkin.sonraki.onceki=etkin.onceki;
+        dugumSayisi--;
+    }   
 }
 public void sondanSil()
 {
@@ -58,6 +150,7 @@ public void sondanSil()
     }
     tail=tail.onceki;
     tail.sonraki=null;
+    dugumSayisi--;
 }
 public void sil(String sil)
 {
@@ -76,18 +169,22 @@ public void sil(String sil)
     {
         head=head.sonraki;
         head.onceki=null;
+        dugumSayisi--;
     }
     else if(etkin==tail)
     {
         tail=tail.onceki;
         tail.sonraki=null;
+        dugumSayisi--;
     }
     else
     {
         etkin.onceki.sonraki=etkin.sonraki;
         etkin.sonraki.onceki=etkin.onceki;
+        dugumSayisi--;
     }
 }
+
 public void ara(String ara)
 {
     Node etkin=head;
@@ -128,7 +225,6 @@ public void dugumeGit(int i)
     System.out.println();
     System.out.println("Baştan sona liste: ");
     Node etkin = head;
-
     while(etkin!=null)
     {
         etkin.yazdir();
