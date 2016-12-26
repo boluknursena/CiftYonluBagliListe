@@ -421,6 +421,6 @@ public void dugumeGit(int i)
 ****
 
 ****
-image::deneme.png[Resim 1: Deneme]
+image::resim.png[Resim 1: Deneme]
 
 ****
