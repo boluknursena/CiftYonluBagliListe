@@ -370,7 +370,7 @@ public void ara(String ara)
 <3> Aranan düğüm yoksa uyarır.
 ****
 
-*ARA*
+*DÜĞÜME GİT*
 
 [source,java]
 ----
